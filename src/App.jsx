@@ -1,19 +1,48 @@
-import { useState } from "react";
+import { useReducer } from "react";
 import Todo from "./Todo/Todo";
 import Pomodoro from "./Pomodoro/Pomodoro";
 import "./App.css";
 
 const App = () => {
-  const [activeComponent, setComponent] = useState("todo");
+  const initialComponentState = {
+    title: "앱 선택(초기:Todo)",
+    component: Todo,
+  };
+
+  const reducer = (state, action) => {
+    switch (action.type) {
+      case "todo":
+        return {
+          ...state,
+          title: "Todo",
+          component: Todo,
+        };
+
+      case "pomodoro":
+        return {
+          ...state,
+          title: "Pomodoro",
+          component: Pomodoro,
+        };
+
+      default:
+        throw new Error("invaild action type");
+    }
+  };
+
+  const [state, dispatch] = useReducer(reducer, initialComponentState);
+  const ComponentToRender = state.component;
 
   return (
     <div className="App">
-      <h1>앱 선택</h1>
-      <button onClick={() => setComponent("todo")}>Todo App</button>
-      <button onClick={() => setComponent("pomodoro")}>Pomodoro App</button>
+      <h1>{state.title}</h1>
 
-      {activeComponent === "todo" && <Todo />}
-      {activeComponent === "pomodoro" && <Pomodoro />}
+      <button onClick={() => dispatch({ type: "todo" })}>Todo App</button>
+      <button onClick={() => dispatch({ type: "pomodoro" })}>
+        Pomodoro App
+      </button>
+
+      <ComponentToRender />
     </div>
   );
 };
