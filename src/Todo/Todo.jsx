@@ -1,6 +1,6 @@
-import "./Todo.css";
 import { useReducer } from "react";
 import { initialTodoState, reducer } from "./todoReducer";
+import "./Todo.css";
 
 const Todo = () => {
   const [state, dispatch] = useReducer(reducer, initialTodoState);

@@ -11,3 +11,15 @@
   text-align: center;
   color: #444;
 }
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.button-container button {
+  margin: 0 5px;
+  padding: 4px 8px;
+  font-size: 12px;
+}
