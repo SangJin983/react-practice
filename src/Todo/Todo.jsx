@@ -1,9 +1,17 @@
 import { useReducer } from "react";
 import { initialTodoState, reducer } from "./todoReducer";
 import "./Todo.css";
+import { MockTodos } from "../Practice/Practice";
+import { useState } from "react";
+import { range } from "lodash";
 
 const Todo = () => {
   const [state, dispatch] = useReducer(reducer, initialTodoState);
+  const [mockTodoIdRange, setMockTodoIdRange] = useState({ from: 1, to: 2 });
+  const todoIds = range(
+    Math.min(mockTodoIdRange.from, mockTodoIdRange.to),
+    Math.max(mockTodoIdRange.from, mockTodoIdRange.to)
+  );
 
   const addTodo = () => {
     dispatch({
@@ -35,6 +43,29 @@ const Todo = () => {
 
   return (
     <div className="todo-container">
+      <div>
+        <label>
+          from
+          <input
+            type="number"
+            value={mockTodoIdRange.from}
+            onChange={(e) =>
+              setMockTodoIdRange({ ...mockTodoIdRange, from: e.target.value })
+            }
+          />
+        </label>
+        <label>
+          to
+          <input
+            type="number"
+            value={mockTodoIdRange.to}
+            onChange={(e) =>
+              setMockTodoIdRange({ ...mockTodoIdRange, to: e.target.value })
+            }
+          />
+        </label>
+      </div>
+      <MockTodos todoIds={todoIds} />
       <div className="todo-input-container">
         <input
           type="text"

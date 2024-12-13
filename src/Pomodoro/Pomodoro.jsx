@@ -1,5 +1,63 @@
+import { useReducer, useEffect } from "react";
+import { initialTimerState, timerReducer } from "./useTimerReducer";
+import { useRef } from "react";
+
 const Pomodoro = () => {
-  return <div className="pomodoro">임시 뽀모도로</div>;
+  const [state, dispatch] = useReducer(timerReducer, initialTimerState);
+  const timerIdRef = useRef(null);
+
+  useEffect(() => {
+    if (state.isRunning && state.remainingTime > 0) {
+      timerIdRef.current = setInterval(() => {
+        dispatch({ type: "TICK" });
+      }, 1000);
+    }
+
+    if (state.isRunning && state.remainingTime <= 0) {
+      dispatch({ type: "STOP_TIMER" });
+      alert("타이머가 종료되었습니다");
+    }
+
+    return () => {
+      if (timerIdRef.current !== null) {
+        clearInterval(timerIdRef.current);
+      }
+    };
+  }, [state.isRunning, state.remainingTime]);
+
+  const handleStart = () => {
+    dispatch({ type: "START_TIMER" });
+  };
+
+  const handleSetDuration = (duration) => {
+    dispatch({ type: "SET_DURATION", payload: duration });
+  };
+
+  const handleReset = () => {
+    dispatch({ type: "RESET_TIMER" });
+  };
+
+  return (
+    <div>
+      <div>
+        <label>
+          시간 설정 (분):
+          <input
+            type="number"
+            onChange={(e) => handleSetDuration(e.target.value * 60)}
+            value={state.duration / 60}
+          />
+        </label>
+        <button onClick={handleStart}>시작</button>
+        <button onClick={handleReset}>리셋</button>
+      </div>
+      <div>
+        남은 시간: {Math.floor(state.remainingTime / 60)}:
+        {state.remainingTime % 60 < 10 ? "0" : ""}
+        {state.remainingTime % 60}
+      </div>
+    </div>
+  );
 };
 
 export default Pomodoro;
