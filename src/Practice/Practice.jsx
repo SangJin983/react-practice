@@ -23,7 +23,6 @@ export const MockTodos = ({ todoIds }) => {
       );
 
       const todos = await Promise.all(todosReponses.map((res) => res.json()));
-      console.log(todos);
 
       setIsLoading(false);
       setMockTodos(todos);

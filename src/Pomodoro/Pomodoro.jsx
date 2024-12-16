@@ -1,6 +1,7 @@
 import { useReducer, useEffect } from "react";
 import { initialTimerState, timerReducer } from "./useTimerReducer";
 import { useRef } from "react";
+import "./Pomodoro.css";
 
 const Pomodoro = () => {
   const [state, dispatch] = useReducer(timerReducer, initialTimerState);
@@ -38,23 +39,28 @@ const Pomodoro = () => {
   };
 
   return (
-    <div>
-      <div>
-        <label>
-          시간 설정 (분):
-          <input
-            type="number"
-            onChange={(e) => handleSetDuration(e.target.value * 60)}
-            value={state.duration / 60}
-          />
-        </label>
-        <button onClick={handleStart}>시작</button>
-        <button onClick={handleReset}>리셋</button>
-      </div>
-      <div>
+    <div className="pomodoro-container">
+      <div className="remaining-time">
         남은 시간: {Math.floor(state.remainingTime / 60)}:
         {state.remainingTime % 60 < 10 ? "0" : ""}
         {state.remainingTime % 60}
+      </div>
+      <label className="pomodoro-label">
+        시간 설정 (분):
+        <input
+          className="pomodoro-input"
+          type="number"
+          onChange={(e) => handleSetDuration(e.target.value * 60)}
+          value={state.duration / 60}
+        />
+      </label>
+      <div className="pomodoro-button-container">
+        <button className="pomodoro-button" onClick={handleStart}>
+          시작
+        </button>
+        <button className="pomodoro-button reset" onClick={handleReset}>
+          리셋
+        </button>
       </div>
     </div>
   );
