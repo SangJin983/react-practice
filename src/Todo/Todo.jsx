@@ -3,6 +3,7 @@ import { useMemo, useReducer, useState } from "react";
 import { MockTodos } from "../Practice/Practice";
 import "./Todo.css";
 import { TodoItem } from "./TodoItem";
+import { TodoRangeInput } from "./TodoRangeInput";
 import { initialTodoState, reducer } from "./todoReducer";
 
 const Todo = () => {
@@ -44,30 +45,18 @@ const Todo = () => {
     });
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      addTodo();
+    }
+  };
+
   return (
     <div className="todo-container">
-      <div>
-        <label>
-          from
-          <input
-            type="number"
-            value={mockTodoIdRange.from}
-            onChange={(e) =>
-              setMockTodoIdRange({ ...mockTodoIdRange, from: e.target.value })
-            }
-          />
-        </label>
-        <label>
-          to
-          <input
-            type="number"
-            value={mockTodoIdRange.to}
-            onChange={(e) =>
-              setMockTodoIdRange({ ...mockTodoIdRange, to: e.target.value })
-            }
-          />
-        </label>
-      </div>
+      <TodoRangeInput
+        todoRange={mockTodoIdRange}
+        setTodorange={setMockTodoIdRange}
+      />
       <MockTodos todoIds={todoIds} />
       <div className="todo-input-container">
         <input
@@ -75,6 +64,7 @@ const Todo = () => {
           className="todo-input"
           value={state.todoInput}
           onChange={(e) => setTodoInput(e.target.value)}
+          onKeyDown={handleKeyDown}
           placeholder="할 일을 입력하세요"
         />
         <button className="add-button" onClick={addTodo}>
