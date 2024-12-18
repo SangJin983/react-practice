@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 
 /*
 얘는 props고
@@ -8,13 +8,12 @@ todoIds: [1, 3, 5],
 요렇게 생겼다
 */
 
-export const MockTodos = ({ todoIds }) => {
+const MockTodos = ({ todoIds }) => {
   const [mockTodos, setMockTodos] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchTodos = async () => {
-      console.log(todoIds);
       setIsLoading(true);
       const todosReponses = await Promise.all(
         todoIds
@@ -38,3 +37,6 @@ export const MockTodos = ({ todoIds }) => {
     </div>
   );
 };
+
+const MemoizedMockTodos = memo(MockTodos);
+export { MemoizedMockTodos as MockTodos };

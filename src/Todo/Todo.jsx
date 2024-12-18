@@ -1,17 +1,20 @@
-import { useReducer } from "react";
-import { initialTodoState, reducer } from "./todoReducer";
-import "./Todo.css";
-import { MockTodos } from "../Practice/Practice";
-import { useState } from "react";
 import { range } from "lodash";
+import { useMemo, useReducer, useState } from "react";
+import { MockTodos } from "../Practice/Practice";
+import "./Todo.css";
+import { TodoItem } from "./TodoItem";
+import { initialTodoState, reducer } from "./todoReducer";
 
 const Todo = () => {
   const [state, dispatch] = useReducer(reducer, initialTodoState);
   const [mockTodoIdRange, setMockTodoIdRange] = useState({ from: 1, to: 2 });
-  const todoIds = range(
-    Math.min(mockTodoIdRange.from, mockTodoIdRange.to),
-    Math.max(mockTodoIdRange.from, mockTodoIdRange.to)
-  );
+
+  const todoIds = useMemo(() => {
+    return range(
+      Math.min(mockTodoIdRange.from, mockTodoIdRange.to),
+      Math.max(mockTodoIdRange.from, mockTodoIdRange.to)
+    );
+  }, [mockTodoIdRange]);
 
   const addTodo = () => {
     dispatch({
@@ -80,28 +83,12 @@ const Todo = () => {
       </div>
       <ul className="todo-list">
         {state.todos.map((todo) => (
-          <li className="todo-item" key={todo.id}>
-            <input
-              type="checkbox"
-              checked={todo.isCompleted}
-              onChange={(event) =>
-                setIsCompleted(todo.id, event.target.checked)
-              }
-            />
-            <span
-              style={{
-                textDecoration: todo.isCompleted ? "line-through" : "none",
-              }}
-            >
-              {todo.content}
-            </span>
-            <button
-              className="delete-button"
-              onClick={() => removeTodo(todo.id)}
-            >
-              삭제
-            </button>
-          </li>
+          <TodoItem
+            key={todo.id}
+            todo={todo}
+            onTodoDelete={removeTodo}
+            onTodoChecked={setIsCompleted}
+          />
         ))}
       </ul>
     </div>
