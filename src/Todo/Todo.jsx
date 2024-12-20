@@ -2,6 +2,7 @@ import { range } from "lodash";
 import { useMemo, useReducer, useState } from "react";
 import { MockTodos } from "../Practice/Practice";
 import "./Todo.css";
+import { TodoInput } from "./TodoInput";
 import { TodoItem } from "./TodoItem";
 import { TodoRangeInput } from "./TodoRangeInput";
 import { initialTodoState, reducer } from "./todoReducer";
@@ -55,22 +56,15 @@ const Todo = () => {
     <div className="todo-container">
       <TodoRangeInput
         todoRange={mockTodoIdRange}
-        setTodorange={setMockTodoIdRange}
+        setTodoRange={setMockTodoIdRange}
       />
       <MockTodos todoIds={todoIds} />
-      <div className="todo-input-container">
-        <input
-          type="text"
-          className="todo-input"
-          value={state.todoInput}
-          onChange={(e) => setTodoInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder="할 일을 입력하세요"
-        />
-        <button className="add-button" onClick={addTodo}>
-          추가
-        </button>
-      </div>
+      <TodoInput
+        todoInput={state.todoInput}
+        setTodoInput={setTodoInput}
+        handleKeyDown={handleKeyDown}
+        onAddTodo={addTodo}
+      />
       <ul className="todo-list">
         {state.todos.map((todo) => (
           <TodoItem

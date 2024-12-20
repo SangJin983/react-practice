@@ -1,6 +1,6 @@
 import { memo } from "react";
 
-const TodoRangeInput = ({ todoRange, setTodorange }) => {
+const TodoRangeInput = ({ todoRange, setTodoRange }) => {
   return (
     <div>
       <label>
@@ -8,7 +8,7 @@ const TodoRangeInput = ({ todoRange, setTodorange }) => {
         <input
           type="number"
           value={todoRange.from}
-          onChange={(e) => setTodorange({ ...todoRange, from: e.target.value })}
+          onChange={(e) => setTodoRange({ ...todoRange, from: e.target.value })}
         />
       </label>
       <label>
@@ -16,7 +16,7 @@ const TodoRangeInput = ({ todoRange, setTodorange }) => {
         <input
           type="number"
           value={todoRange.to}
-          onChange={(e) => setTodorange({ ...todoRange, to: e.target.value })}
+          onChange={(e) => setTodoRange({ ...todoRange, to: e.target.value })}
         />
       </label>
     </div>
