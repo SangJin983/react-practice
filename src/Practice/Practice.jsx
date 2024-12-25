@@ -1,13 +1,5 @@
 import { useEffect, useState, memo } from "react";
 
-/*
-얘는 props고
-{
-todoIds: [1, 3, 5],
-}
-요렇게 생겼다
-*/
-
 const MockTodos = ({ todoIds }) => {
   const [mockTodos, setMockTodos] = useState([]);
   const [isLoading, setIsLoading] = useState(false);

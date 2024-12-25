@@ -1,9 +1,6 @@
-export const TodoInput = ({
-  todoInput,
-  setTodoInput,
-  handleKeyDown,
-  onAddTodo,
-}) => {
+import { memo } from "react";
+
+const TodoInput = ({ todoInput, setTodoInput, handleKeyDown, onAddTodo }) => {
   return (
     <div className="todo-input-container">
       <input
@@ -20,3 +17,6 @@ export const TodoInput = ({
     </div>
   );
 };
+
+const MemoizedTodoInput = memo(TodoInput);
+export { MemoizedTodoInput as TodoInput };

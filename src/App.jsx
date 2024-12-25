@@ -15,7 +15,8 @@ const App = () => {
         <button onClick={() => setComponent("Pomodoro")}>Pomodoro</button>
       </div>
 
-      {activeComponent === "Todo" ? <Todo /> : <Pomodoro />}
+      {activeComponent === "Todo" && <Todo />}
+      {activeComponent === "Pomodoro" && <Pomodoro />}
     </div>
   );
 };
