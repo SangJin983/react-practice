@@ -1,6 +1,7 @@
 import { range } from "lodash";
-import { useCallback, useMemo, useReducer, useState } from "react";
+import { useMemo, useReducer, useState } from "react";
 import { MockTodos } from "../Practice/Practice";
+import { generateUseCallbackFn } from "../../utils/generateUseCallbackFn";
 import "./Todo.css";
 import { TodoInput } from "./TodoInput";
 import { TodoItem } from "./TodoItem";
@@ -52,8 +53,6 @@ const Todo = () => {
     }
   };
 
-  const generateUseCallbackFn = (fn, deps = []) => useCallback(fn, deps);
-  
   const memoizedAddTodo = generateUseCallbackFn(addTodo);
   const memoizedSetTodoInput = generateUseCallbackFn(setTodoInput);
   const memoizedhHndleKeyDown = generateUseCallbackFn(handleKeyDown);

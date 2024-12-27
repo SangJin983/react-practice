@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
-import Pomodoro from "./Pomodoro/Pomodoro";
-import Todo from "./Todo/Todo";
+import Pomodoro from "./components/Pomodoro/Pomodoro";
+import Todo from "./components/Todo/Todo";
 
 const App = () => {
   const [activeComponent, setComponent] = useState("Todo");
