@@ -1,15 +1,12 @@
 import { range } from "lodash";
-import { useMemo, useReducer, useState } from "react";
+import { useMemo, useState } from "react";
 import { MockTodos } from "../Practice/Practice";
-import { generateUseCallbackFn } from "../../utils/generateUseCallbackFn";
 import "./Todo.css";
 import { TodoInput } from "./TodoInput";
-import { TodoItem } from "./TodoItem";
+import { TodoItems } from "./TodoItems";
 import { TodoRangeInput } from "./TodoRangeInput";
-import { initialTodoState, reducer } from "./todoReducer";
 
 const Todo = () => {
-  const [state, dispatch] = useReducer(reducer, initialTodoState);
   const [mockTodoIdRange, setMockTodoIdRange] = useState({ from: 1, to: 2 });
 
   const todoIds = useMemo(() => {
@@ -19,44 +16,6 @@ const Todo = () => {
     );
   }, [mockTodoIdRange]);
 
-  const addTodo = () => {
-    dispatch({
-      type: "addTodo",
-    });
-  };
-
-  const setTodoInput = (todoInput) => {
-    dispatch({
-      type: "setTodoInput",
-      newTodoInput: todoInput,
-    });
-  };
-
-  const removeTodo = (id) => {
-    dispatch({
-      type: "removeTodo",
-      todoId: id,
-    });
-  };
-
-  const setIsCompleted = (id, isCompleted) => {
-    dispatch({
-      type: "setIsCompleted",
-      todoId: id,
-      isCompleted,
-    });
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      addTodo();
-    }
-  };
-
-  const memoizedAddTodo = generateUseCallbackFn(addTodo);
-  const memoizedSetTodoInput = generateUseCallbackFn(setTodoInput);
-  const memoizedhHndleKeyDown = generateUseCallbackFn(handleKeyDown);
-
   return (
     <div className="todo-container">
       <TodoRangeInput
@@ -64,22 +23,8 @@ const Todo = () => {
         setTodoRange={setMockTodoIdRange}
       />
       <MockTodos todoIds={todoIds} />
-      <TodoInput
-        todoInput={state.todoInput}
-        setTodoInput={memoizedSetTodoInput}
-        handleKeyDown={memoizedhHndleKeyDown}
-        onAddTodo={memoizedAddTodo}
-      />
-      <ul className="todo-list">
-        {state.todos.map((todo) => (
-          <TodoItem
-            key={todo.id}
-            todo={todo}
-            onTodoDelete={removeTodo}
-            onTodoChecked={setIsCompleted}
-          />
-        ))}
-      </ul>
+      <TodoInput />
+      <TodoItems />
     </div>
   );
 };
