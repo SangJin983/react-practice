@@ -4,7 +4,7 @@ import { useTodo } from "./useTodo";
 const TodoInput = () => {
   const {state, addTodo, setTodoInput} = useTodo();
 
-  const handleKeyDown = (e) => {
+  const handleKeyUP = (e) => {
     if (e.key === "Enter") {
       addTodo();
     }
@@ -17,7 +17,7 @@ const TodoInput = () => {
         className="todo-input"
         value={state.todoInput}
         onChange={(e) => setTodoInput(e.target.value)}
-        onKeyDown={handleKeyDown}
+        onKeyUp={handleKeyUP}
         placeholder="할 일을 입력하세요"
       />
       <button className="add-button" onClick={addTodo}>
