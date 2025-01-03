@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import Pomodoro from "./components/Pomodoro/Pomodoro";
+import { PomodoroProvider } from "./components/Pomodoro/PomodoroProvider";
 import Stock from "./components/Stock/Stock";
 import Todo from "./components/Todo/Todo";
 import { TodoProvider } from "./components/Todo/TodoProvider";
@@ -23,7 +24,11 @@ const App = () => {
           <Todo />
         </TodoProvider>
       )}
-      {activeComponent === "Pomodoro" && <Pomodoro />}
+      {activeComponent === "Pomodoro" && (
+        <PomodoroProvider>
+          <Pomodoro />
+        </PomodoroProvider>
+      )}
       {activeComponent === "Stock" && <Stock />}
     </div>
   );
