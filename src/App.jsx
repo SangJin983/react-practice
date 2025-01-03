@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { match } from "ts-pattern";
 import "./App.css";
 import Pomodoro from "./components/Pomodoro/Pomodoro";
 import { PomodoroProvider } from "./components/Pomodoro/PomodoroProvider";
@@ -19,17 +20,19 @@ const App = () => {
         <button onClick={() => setComponent("Stock")}>Stock</button>
       </div>
 
-      {activeComponent === "Todo" && (
-        <TodoProvider>
-          <Todo />
-        </TodoProvider>
-      )}
-      {activeComponent === "Pomodoro" && (
-        <PomodoroProvider>
-          <Pomodoro />
-        </PomodoroProvider>
-      )}
-      {activeComponent === "Stock" && <Stock />}
+      {match(activeComponent)
+        .with("Todo", () => (
+          <TodoProvider>
+            <Todo />
+          </TodoProvider>
+        ))
+        .with("Pomodoro", () => (
+          <PomodoroProvider>
+            <Pomodoro />
+          </PomodoroProvider>
+        ))
+        .with("Stock", () => <Stock />)
+        .exhaustive()}
     </div>
   );
 };
