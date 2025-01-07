@@ -2,8 +2,14 @@ import { useEffect } from "react";
 import { useTyping } from "./useTyping";
 
 export const Typing = () => {
-  const { state, setUserInput, startTimer, stopTimer, logElapsedTime } =
-    useTyping();
+  const {
+    state,
+    setUserInput,
+    startTimer,
+    stopTimer,
+    logElapsedTime,
+    updateSentence,
+  } = useTyping();
 
   const handleChange = (e) => {
     setUserInput(e.target.value);
@@ -16,16 +22,36 @@ export const Typing = () => {
   };
 
   useEffect(() => {
-    if (state.userInput === state.sentence) {
-      stopTimer();
+    if (state.userInput === state.sentence && state.startTime) {
+      // stopTimer가 연속으로 호출되는 문제 방지
+      if (state.endTime == null) {
+        stopTimer();
+      }
     }
-  }, [state.userInput, state.sentence, stopTimer]);
+  }, [
+    state.userInput,
+    state.sentence,
+    stopTimer,
+    state.startTime,
+    state.endTime,
+  ]);
 
   useEffect(() => {
     if (state.endTime) {
       logElapsedTime();
+      updateSentence();
     }
-  }, [state.endTime, logElapsedTime]);
+  }, [state.endTime, logElapsedTime, updateSentence]);
+
+  useEffect(() => {
+    if (
+      state.elapsedTime &&
+      state.userInput !== "" &&
+      state.startTime == null
+    ) {
+      startTimer();
+    }
+  }, [state.elapsedTime, state.userInput, startTimer, state.startTime]);
 
   return (
     <div>

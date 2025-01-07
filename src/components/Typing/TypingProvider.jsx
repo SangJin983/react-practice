@@ -1,9 +1,14 @@
-import { createContext, useReducer } from "react";
+import { useReducer } from "react";
+import TypingContext from "./TypingContext";
+import { fetchRandomSentence } from "./utils/fetchRandomSentence";
 
-const SET_USER_INPUT = "SET_USER_INPUT";
-const START_TIMER = "START_TIMER";
-const STOP_TIMER = "STOP_TIMER";
-const LOG_ELAPSED_TIME = "LOG_ELAPSED_TIME";
+const actionTypes = {
+  SET_USER_INPUT: "SET_USER_INPUT",
+  START_TIMER: "START_TIMER",
+  STOP_TIMER: "STOP_TIMER",
+  LOG_ELAPSED_TIME: "LOG_ELAPSED_TIME",
+  UPDATE_SENTENCE: "UPDATE_SENTENCE",
+};
 
 const initialTypingState = {
   sentence: "Type this sentence as fast as you can",
@@ -15,52 +20,65 @@ const initialTypingState = {
 
 const typingReducer = (state, action) => {
   switch (action.type) {
-    case `${SET_USER_INPUT}`:
+    case actionTypes.UPDATE_SENTENCE:
+      return { ...state, sentence: action.payload };
+    case actionTypes.SET_USER_INPUT:
       return { ...state, userInput: action.payload };
-    case `${START_TIMER}`:
-      return { ...state, startTime: Date.now() };
-    case `${STOP_TIMER}`:
-      return { ...state, endTime: Date.now() };
-    case `${LOG_ELAPSED_TIME}`:
+    case actionTypes.START_TIMER:
+      return { ...state, startTime: action.payload };
+    case actionTypes.STOP_TIMER:
+      return { ...state, endTime: action.payload };
+    case actionTypes.LOG_ELAPSED_TIME:
       return {
         ...initialTypingState,
-        elapsedTime: (state.endTime - state.startTime) / 1000,
+        elapsedTime: action.payload,
       };
     default:
       throw new Error("Invaild action type");
   }
 };
 
-export const TypingContext = createContext(null);
-
 export const TypingProvider = ({ children }) => {
   const [state, dispatch] = useReducer(typingReducer, initialTypingState);
 
+  const updateSentence = async () => {
+    const newSentence = await fetchRandomSentence();
+    dispatch({ type: actionTypes.UPDATE_SENTENCE, payload: newSentence[0] });
+  };
+
   const setUserInput = (input) => {
-    dispatch({ type: `${SET_USER_INPUT}`, payload: input });
+    dispatch({ type: actionTypes.SET_USER_INPUT, payload: input });
   };
 
   const startTimer = () => {
-    dispatch({ type: `${START_TIMER}` });
+    const startTime = Date.now();
+    dispatch({ type: actionTypes.START_TIMER, payload: startTime });
   };
 
   const stopTimer = () => {
-    dispatch({ type: `${STOP_TIMER}` });
+    const endTime = Date.now();
+    dispatch({ type: actionTypes.STOP_TIMER, payload: endTime });
   };
 
   const logElapsedTime = () => {
     if (state.endTime && state.startTime) {
-      dispatch({ type: `${LOG_ELAPSED_TIME}` });
+      const elapsedTime = (state.endTime - state.startTime) / 1000;
+      dispatch({ type: actionTypes.LOG_ELAPSED_TIME, payload: elapsedTime });
     } else {
-      throw new Error(
-        "Timer must be started and stopped before logging time"
-      );
+      throw new Error("Timer must be started and stopped before logging time");
     }
   };
 
   return (
     <TypingContext.Provider
-      value={{ state, setUserInput, startTimer, stopTimer, logElapsedTime }}
+      value={{
+        state,
+        setUserInput,
+        startTimer,
+        stopTimer,
+        logElapsedTime,
+        updateSentence,
+      }}
     >
       {children}
     </TypingContext.Provider>

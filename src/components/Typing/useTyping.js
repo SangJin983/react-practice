@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { TypingContext } from "./TypingProvider";
+import TypingContext from "./TypingContext";
 
 export const useTyping = () => {
   const typingState = useContext(TypingContext);
